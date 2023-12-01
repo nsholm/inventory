@@ -37,6 +37,8 @@ void inventory::addItem(item item_)
         this->itemList.push_back(item_);
     else
         itemPointer->quantity += item_.quantity;
+    
+    std::cout << "\tAdded " << item_.quantity << " " << item_.name << " to the inventory.\n";
 }
 
 void inventory::removeItem(item item_)
@@ -49,7 +51,16 @@ void inventory::removeItem(item item_)
         if (itemPointer->quantity <= 0)
         {
             this->itemList.remove(*itemPointer);
+            std::cout << "\tRemoved all " << item_.name << " from the inventory.\n";
         }
+        else
+        {
+            std::cout << "\tRemoved " << item_.quantity << " " << item_.name << " from the inventory.\n";
+        }
+    }
+    else
+    {
+        std::cout << "\tThere are no " << item_.name << " in the inventory.\n";
     }
 }
 
