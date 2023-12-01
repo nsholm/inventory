@@ -16,10 +16,11 @@ void printHelp()
     std::cout << "\trem : Removes an item from the inventory.\n";
     std::cout << "\t\t\"rem milk\" removes 1 milk from the inventory\n";
     std::cout << "\t\t\"rem milk -q 5\" removes 5 milk from the inventory\n";
+    std::cout << "\tupd : Updates the quantity of an existing item in the inventory.\n";
+    std::cout << "\t\t\"upd milk -q 10\" updates the quantity of milk to 10\n"; 
     std::cout << "\tlist : Prints info about the inventory.\n";
     std::cout << "\t\t\"list\" prints all items and their quantaties in the inventory.\n";
     std::cout << "\t\t\"list milk\" prints the number of milks in the inventory.\n";
-    std::cout << "\n";
     std::cout << "If an unsupported command is given, then this text is printed.\n";
 }
 
@@ -79,35 +80,25 @@ bool processListCommand(std::vector<std::string> userInputArguments_, item * ite
     return false;
 }
 
-bool processRemoveCommand(std::vector<std::string> userInputArguments_, std::string * itemName_, int * quantity)
+bool processUpdateCommand(std::vector<std::string> userInputArguments_, item * item_)
 {
-    // If number of user input arguments is not either 2 or 4, then return false
-    if (!((userInputArguments_.size() == 2) || (userInputArguments_.size() == 4)))
+    // If number of user input arguments is not 4, then return
+    if (userInputArguments_.size() != 4)
         return false;
-    
-    // If number of user input arguments are 2, then the second argument must be the item name,
-    // and the quantity is set to 1
-    if (userInputArguments_.size() == 2)
-    {
-        *itemName_ = userInputArguments_[1];
-        *quantity = 1;
-        return true;
-    }
 
-    // If this point is reached, then there are 4 arguments, and the third argument must
-    // be equal to "-q" to be valid, and the fourth argument must be an integer
+    // If third argument is not equal to "-q", then return
     if (userInputArguments_[2] != "-q")
         return false;
     
-    // We then try to convert the fourth argument to an integer
+    // If fourth argument is not an integer, then return
     char * p;
     int converted = strtol(userInputArguments_[3].c_str(), &p, 10); 
     if (*p)
         return false;
-    
-    *itemName_ = userInputArguments_[1];
-    *quantity = stoi(userInputArguments_[3]);
-    
+
+    // All arguments are valid, return item_ with status=true
+    item_->name = userInputArguments_[1];
+    item_->quantity = stoi(userInputArguments_[3]);
     return true;
 }
 
@@ -134,7 +125,7 @@ bool processUserInput(std::string userInput_, commands * command_, item * item_)
 
     // Check if command (first argument) is valid, by checking if it exist
     // in the validCommands string vector
-    std::vector<std::string> validCommands = {"add", "rem", "list"};
+    std::vector<std::string> validCommands = {"add", "rem", "list", "upd"};
     int validCommandIndex = -1;
     for (int i = 0; i < validCommands.size(); i++)
     {
@@ -153,6 +144,8 @@ bool processUserInput(std::string userInput_, commands * command_, item * item_)
         status = processAddAndRemoveCommand(userInputArguments, item_);
     if (*command_ == LIST)
         status = processListCommand(userInputArguments, item_);
+    if (*command_ == UPDATE)
+        status = processUpdateCommand(userInputArguments, item_);
     
     return status;
 }
@@ -161,8 +154,8 @@ int main()
 {
     // Decleration of variables
     inventory inventory;
-    char userInput[MAX_USER_INPUT_LENGTH];
-    bool status;
+    std::string userInput;
+    bool userInputValid;
     commands command;
     item item;
 
@@ -173,12 +166,12 @@ int main()
     {
         // Get user input
         std::cout << "Please enter input: ";
-        std::cin.getline(userInput, MAX_USER_INPUT_LENGTH);
+        std::getline(std::cin, userInput);
 
         // Proccess user input, then either perform the required command 
         // or print help text
-        status = processUserInput(userInput, &command, &item);
-        if (status == true)
+        userInputValid = processUserInput(userInput, &command, &item);
+        if (userInputValid == true)
             inventory.processCommand(command, item);
         else
             printHelp();

@@ -12,6 +12,8 @@ void inventory::processCommand(commands command_, item item_)
         this->addItem(item_);
     if (command_ == REMOVE)
         this->removeItem(item_);
+    if (command_ == UPDATE)
+        this->updateItem(item_);
     if ((command_ == LIST) && (item_.name.size() == 0))
         this->printInventory();
     if ((command_ == LIST) && (item_.name.size() > 0))
@@ -61,6 +63,21 @@ void inventory::removeItem(item item_)
     else
     {
         std::cout << "\tThere are no " << item_.name << " in the inventory.\n";
+    }
+}
+
+void inventory::updateItem(item item_)
+{
+    item * itemPointer = this->getItemPointer(item_.name);
+
+    if (itemPointer != NULL)
+    {
+        itemPointer->quantity = item_.quantity;
+        std::cout << "\tUpdated quantity of " << item_.name << " to " << item_.quantity << ".\n";
+    }
+    else
+    {
+        std::cout << "\t" << item_.name << " was not found in invetory, please run \"add " << item_.name << "\" before updating quantity.\n";
     }
 }
 

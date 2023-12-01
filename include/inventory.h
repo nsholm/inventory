@@ -6,12 +6,7 @@ enum commands
     ADD     = 0,
     REMOVE  = 1,
     LIST    = 2,
-};
-
-enum arguments
-{
-    ITEM    = 0,
-    QUANTITY= 1,
+    UPDATE  = 3,
 };
 
 class item
@@ -40,6 +35,7 @@ class inventory
     private:
         void addItem(item item_);
         void removeItem(item item_);
+        void updateItem(item item_);
         void printItemInfo(item item_);
         void printInventory();
         item * getItemPointer(std::string itemName_);
