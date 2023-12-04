@@ -26,13 +26,10 @@ void printHelp()
 
 int main()
 {
-    // Decleration of variables
+    // Decleration of variables and classes
     inventory inventory;
-    std::string userInput;
-    bool userInputValid;
-    commands command;
-    Item item;
     Process process;
+    std::string userInput;
 
     // Print help text for the user
     printHelp();
@@ -45,9 +42,9 @@ int main()
 
         // Proccess user input, then either perform the required command 
         // or print help text
-        userInputValid = process.userInput(userInput, &command, &item);
-        if (userInputValid == true)
-            inventory.exetuceCommand(command, item);
+        process.userInput(userInput);
+        if (process.valid() == true)
+            inventory.exetuceCommand(process.getCommand(), process.getItem());
         else
             printHelp();
     }

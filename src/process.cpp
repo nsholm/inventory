@@ -1,7 +1,7 @@
 #include "process.h"
 #include <bits/stdc++.h>
 
-bool Process::addAndRemoveCommand(std::vector<std::string> userInputArguments_, item * item_)
+bool Process::addAndRemoveCommand(std::vector<std::string> userInputArguments_, Item * item_)
 {
     // If number of user input arguments is not either 2 or 4, then return false
     if (!((userInputArguments_.size() == 2) || (userInputArguments_.size() == 4)))
@@ -33,7 +33,7 @@ bool Process::addAndRemoveCommand(std::vector<std::string> userInputArguments_, 
     return true;
 }
 
-bool Process::listCommand(std::vector<std::string> userInputArguments_, item * item_)
+bool Process::listCommand(std::vector<std::string> userInputArguments_, Item * item_)
 {
     // If number of user input arguments is not either 1 or 2, then return false
     if ((userInputArguments_.size() < 1) || userInputArguments_.size() > 2)
@@ -57,7 +57,7 @@ bool Process::listCommand(std::vector<std::string> userInputArguments_, item * i
     return false;
 }
 
-bool Process::updateCommand(std::vector<std::string> userInputArguments_, item * item_)
+bool Process::updateCommand(std::vector<std::string> userInputArguments_, Item * item_)
 {
     // If number of user input arguments is not 4, then return
     if (userInputArguments_.size() != 4)
@@ -82,11 +82,14 @@ bool Process::updateCommand(std::vector<std::string> userInputArguments_, item *
 // This function takes the user input as an input, extracts the 
 // command and arguments and returns a boolean indicating if it is 
 // a valid command
-bool Process::userInput(std::string userInput_, commands * command_, item * item_)
+void Process::userInput(std::string userInput_)
 {
     // Check if length of string is zero, and return false
     if (userInput_.size() == 0)
-        return false;
+    {
+        this->userInputValid = false;
+        return;
+    }
 
     // Split string by creating a stringstream, and then loop through
     // the string as long as there is still a space left.
@@ -110,19 +113,35 @@ bool Process::userInput(std::string userInput_, commands * command_, item * item
             validCommandIndex = i;
     }
     if (validCommandIndex == -1)    // Return false, if command is not valid
-        return false;
+    {
+        this->userInputValid = false;
+        return;
+    }
     
-    *command_ = (commands)validCommandIndex;
+    this->command = (commands)validCommandIndex;
 
     // Process the user input arguments in the function dedicated for 
     // the given command
-    bool status = false;
-    if ((*command_ == ADD) || (*command_ == REMOVE))
-        status = this->addAndRemoveCommand(userInputArguments, item_);
-    if (*command_ == LIST)
-        status = this->listCommand(userInputArguments, item_);
-    if (*command_ == UPDATE)
-        status = this->updateCommand(userInputArguments, item_);
-    
-    return status;
+    this->userInputValid = false;
+    if ((this->command == ADD) || (this->command == REMOVE))
+        this->userInputValid = this->addAndRemoveCommand(userInputArguments, &(this->item));
+    if (this->command == LIST)
+        this->userInputValid = this->listCommand(userInputArguments, &(this->item));
+    if (this->command == UPDATE)
+        this->userInputValid = this->updateCommand(userInputArguments, &(this->item));
+}
+
+bool Process::valid()
+{
+    return this->userInputValid;
+}
+
+commands Process::getCommand()
+{
+    return this->command;
+}
+
+Item Process::getItem()
+{
+    return this->item;
 }

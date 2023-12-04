@@ -9,12 +9,19 @@
 class Process
 {
     public:
-        bool userInput(std::string userInput_, commands * command_, Item * item_);
+        Process() :
+            userInputValid(false), command(ADD), item() {};
+        void userInput(std::string userInput_);
+        bool valid();
+        commands getCommand();
+        Item getItem();
     private:
         bool addAndRemoveCommand(std::vector<std::string> userInputArguments_, Item * item_);
         bool listCommand(std::vector<std::string> userInputArguments_, Item * item_);
         bool updateCommand(std::vector<std::string> userInputArguments_, Item * item_);
-
+        bool userInputValid;
+        commands command;
+        Item item;
 };
 
 #endif
