@@ -3,16 +3,16 @@
 
 #include <string>
 
-class item
+class Item
 {
     public:
-        item() :
+        Item() :
             name(""), quantity(1) {};
-        item(std::string name_) :
+        Item(std::string name_) :
             name(name_), quantity(1) {};
-        item(std::string name_, int quantity_) :
+        Item(std::string name_, int quantity_) :
             name(name_), quantity(quantity_) {};
-        bool operator==(item itemToCompare_) {
+        bool operator==(Item itemToCompare_) {
             if (itemToCompare_.name != this->name) return false;
             if (itemToCompare_.quantity != this->quantity) return false;
             return true;

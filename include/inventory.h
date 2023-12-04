@@ -10,15 +10,15 @@ class inventory
 {
     public:
         inventory();
-        void exetuceCommand(commands command_, item item_);
+        void exetuceCommand(commands command_, Item item_);
     private:
-        void addItem(item item_);
-        void removeItem(item item_);
-        void updateItem(item item_);
-        void printItemInfo(item item_);
+        void addItem(Item item_);
+        void removeItem(Item item_);
+        void updateItem(Item item_);
+        void printItemInfo(Item item_);
         void printInventory();
-        item * getItemPointer(std::string itemName_);
-        std::list<item> itemList;
+        Item * getItemPointer(std::string itemName_);
+        std::list<Item> itemList;
 };
 
 #endif

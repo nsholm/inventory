@@ -6,7 +6,7 @@ inventory::inventory()
     this->itemList.clear();
 }
 
-void inventory::exetuceCommand(commands command_, item item_)
+void inventory::exetuceCommand(commands command_, Item item_)
 {
     if (command_ == ADD)
         this->addItem(item_);
@@ -20,7 +20,7 @@ void inventory::exetuceCommand(commands command_, item item_)
         this->printItemInfo(item_);
 }
 
-item * inventory::getItemPointer(std::string itemName_)
+Item * inventory::getItemPointer(std::string itemName_)
 {
     for (auto it = this->itemList.begin(); it != this->itemList.end(); ++it)
     {
@@ -31,9 +31,9 @@ item * inventory::getItemPointer(std::string itemName_)
     return NULL;
 }
 
-void inventory::addItem(item item_)
+void inventory::addItem(Item item_)
 {
-    item * itemPointer = this->getItemPointer(item_.name);
+    Item * itemPointer = this->getItemPointer(item_.name);
 
 
     if (itemPointer != NULL)
@@ -44,9 +44,9 @@ void inventory::addItem(item item_)
     std::cout << "\tAdded " << item_.quantity << " " << item_.name << " to the inventory.\n";
 }
 
-void inventory::removeItem(item item_)
+void inventory::removeItem(Item item_)
 {
-    item * itemPointer = this->getItemPointer(item_.name);
+    Item * itemPointer = this->getItemPointer(item_.name);
 
     if (itemPointer != NULL)
     {
@@ -67,9 +67,9 @@ void inventory::removeItem(item item_)
     }
 }
 
-void inventory::updateItem(item item_)
+void inventory::updateItem(Item item_)
 {
-    item * itemPointer = this->getItemPointer(item_.name);
+    Item * itemPointer = this->getItemPointer(item_.name);
 
     if (itemPointer != NULL)
     {
@@ -82,9 +82,9 @@ void inventory::updateItem(item item_)
     }
 }
 
-void inventory::printItemInfo(item item_)
+void inventory::printItemInfo(Item item_)
 {
-    item * itemPointer = this->getItemPointer(item_.name);
+    Item * itemPointer = this->getItemPointer(item_.name);
 
     if (itemPointer != NULL)
         std::cout << "\tThere are " << itemPointer->quantity << " " << item_.name << " in the inventory.\n";

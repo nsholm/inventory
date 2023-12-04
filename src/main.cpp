@@ -31,7 +31,7 @@ int main()
     std::string userInput;
     bool userInputValid;
     commands command;
-    item item;
+    Item item;
     Process process;
 
     // Print help text for the user
