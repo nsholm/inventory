@@ -6,7 +6,7 @@ inventory::inventory()
     this->itemList.clear();
 }
 
-void inventory::processCommand(commands command_, item item_)
+void inventory::exetuceCommand(commands command_, item item_)
 {
     if (command_ == ADD)
         this->addItem(item_);
@@ -35,10 +35,11 @@ void inventory::addItem(item item_)
 {
     item * itemPointer = this->getItemPointer(item_.name);
 
-    if (itemPointer == NULL)
-        this->itemList.push_back(item_);
-    else
+
+    if (itemPointer != NULL)
         itemPointer->quantity += item_.quantity;
+    else
+        this->itemList.push_back(item_);
     
     std::cout << "\tAdded " << item_.quantity << " " << item_.name << " to the inventory.\n";
 }
@@ -85,10 +86,10 @@ void inventory::printItemInfo(item item_)
 {
     item * itemPointer = this->getItemPointer(item_.name);
 
-    if (itemPointer == NULL)
-        std::cout << "\tThere are no " << item_.name << " in the inventory.\n";
-    else
+    if (itemPointer != NULL)
         std::cout << "\tThere are " << itemPointer->quantity << " " << item_.name << " in the inventory.\n";
+    else
+        std::cout << "\tThere are no " << item_.name << " in the inventory.\n";
 }
 
 void inventory::printInventory()
@@ -97,7 +98,5 @@ void inventory::printInventory()
         std::cout << "\tThere are no items in the inventory.\n";
 
     for (auto it = this->itemList.begin(); it != this->itemList.end(); ++it)
-    {
         std::cout<< "\tThere are " << it->quantity << " " << it->name << " in the inventory.\n";
-    }
 }
